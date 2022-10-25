@@ -6,7 +6,7 @@ class Artiste(models.Model):
     age = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return self.first_name, self.last_name
+        return self.first_name + ' ' + self.last_name
 
 class Song(models.Model):
     artiste_id = models.ForeignKey(Artiste, on_delete=models.CASCADE)
