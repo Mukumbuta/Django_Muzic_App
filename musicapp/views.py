@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from musicapp.models import Song, Artiste, Lyric
+from musicapp.models import Song, Artiste, Lyrics
 from musicapp.serializers import SongSerializer, ArtisteSerializer, LyricSerializer
 
 # get list of artists
@@ -21,18 +21,18 @@ def artiste_list(request):
 
 
 # View for getting, updating and deleting an individual Artist
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'PATCH', 'DELETE'])
 def artiste_details(request, pk):
     try:
         artist = Artiste.objects.get(pk=pk)
     except Artiste.DoesNotExist:
-        return Response(status=status.HTTp_404_NOT_FOUND)
+        return Response({'Error': 'Not Found'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
         serializer = ArtisteSerializer(artist)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    elif request.method == 'PUT':
+    elif request.method == 'PATCH':
         serializer = ArtisteSerializer(artist, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -60,7 +60,7 @@ def song_list(request):
 
 
 # View for getting, updating and deleting an individual Song
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'PATCH', 'DELETE'])
 def song_details(request, pk):
     try:
         song = Song.objects.get(pk=pk)
@@ -71,11 +71,12 @@ def song_details(request, pk):
         serializer = SongSerializer(song)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    elif request.method == 'PUT':
+    elif request.method == 'PATCH':
         serializer = SongSerializer(song, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return(serializer.data)
+            print(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
