@@ -27,8 +27,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'authentication',
     'musicapp',
 ]
+
+# Rest_framework auth Configurations
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASS': (
+        'authentication.backends.JWTAuthentication',
+    )
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -102,6 +110,9 @@ USE_I18N = True
 
 USE_TZ = True
 
+
+# JWT
+JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
